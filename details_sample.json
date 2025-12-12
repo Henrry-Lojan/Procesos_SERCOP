@@ -1,0 +1,244 @@
+{
+  "uri": "https://portal.compraspublicas.gob.ec/sercop/datos_abiertos/",
+  "license": "https://creativecommons.org/licenses/by/3.0/ec/",
+  "version": "1.1",
+  "releases": [
+    {
+      "id": "CDC-BIESS-2024-003-278089-2025-03-28T12:09:16.308Z-compiled",
+      "tag": [
+        "planning",
+        "tender",
+        "award",
+        "contract"
+      ],
+      "date": "2025-03-28T07:13:04-05:00",
+      "ocid": "ocds-5wno2w-CDC-BIESS-2024-003-278089",
+      "buyer": {
+        "id": "EC-RUC-1768156470001-278089",
+        "name": "BANCO DEL INSTITUTO ECUATORIANO DE SEGURIDAD SOCIAL"
+      },
+      "awards": [
+        {
+          "id": "7853033-CDC-BIESS-2024-003",
+          "date": "2025-02-18T16:26:57-05:00",
+          "items": [
+            {
+              "id": "4256127-DS-SO",
+              "unit": {
+                "id": "436",
+                "name": "Unidad",
+                "value": {
+                  "amount": 60000,
+                  "currency": "USD"
+                },
+                "scheme": "SERCOP"
+              },
+              "quantity": 1,
+              "description": "SERVICIOS DE ASISTENCIA DE ASESORAMIENTO, ORIENTACION Y OPERACIONALES RELATIVOS A LA GESTION DE LOS RECURSOS HUMANOS DE UNA ORGANIZACION. LAS FUNCIONES DE CONSULTORIA EN MATERIA DE RECURSOS HUMANOS PUEDEN INCLUIR LA ACTIVIDAD DE AUDITORIA DE LA FUNCION",
+              "classification": {
+                "id": "831130011",
+                "scheme": "CPC",
+                "description": "SERVICIOS DE ASISTENCIA DE ASESORAMIENTO, ORIENTACION Y OPERACIONALES RELATIVOS A LA GESTION DE LOS RECURSOS HUMANOS DE UNA ORGANIZACION. LAS FUNCIONES DE CONSULTORIA EN MATERIA DE RECURSOS HUMANOS PUEDEN INCLUIR LA ACTIVIDAD DE AUDITORIA DE LA FUNCION"
+              },
+              "additionalClassifications": [
+                {
+                  "id": "83113.00.1",
+                  "uri": "https://www.compraspublicas.gob.ec/ProcesoContratacion/compras/exe/verComProductos_exe.php?tipo=buscar&idProducto=83113.00.1",
+                  "scheme": "CPC",
+                  "description": " SERVICIOS DE ASISTENCIA DE ASESORAMIENTO, ORIENTACION Y OPERACIONALES RELATIVOS A LA GESTION DE LOS RECURSOS HUMANOS DE UNA ORGANIZACION. LAS FUNCIONES DE CONSULTORIA EN MATERIA DE RECURSOS HUMANOS PUEDEN INCLUIR LA ACTIVIDAD DE  AUDITORIA DE LA FUNCION "
+                }
+              ]
+            }
+          ],
+          "value": {
+            "amount": 60000,
+            "currency": "USD"
+          },
+          "suppliers": [
+            {
+              "id": "EC-RUC-1793214353001-1225112",
+              "name": "FCB ABOGADOS S.A.S."
+            }
+          ],
+          "description": "Seg\u00fan recomendaci\u00f3n de la comisi\u00f3n t\u00e9cnica"
+        }
+      ],
+      "tender": {
+        "id": "CDC-BIESS-2024-003-278089",
+        "items": [
+          {
+            "id": "4256127-DS-SO",
+            "unit": {
+              "id": "436",
+              "name": "Unidad",
+              "value": {
+                "amount": 60000,
+                "currency": "USD"
+              },
+              "scheme": "SERCOP"
+            },
+            "quantity": 1,
+            "description": "SERVICIOS DE ASISTENCIA DE ASESORAMIENTO, ORIENTACION Y OPERACIONALES RELATIVOS A LA GESTION DE LOS RECURSOS HUMANOS DE UNA ORGANIZACION. LAS FUNCIONES DE CONSULTORIA EN MATERIA DE RECURSOS HUMANOS PUEDEN INCLUIR LA ACTIVIDAD DE AUDITORIA DE LA FUNCION",
+            "classification": {
+              "id": "831130011",
+              "scheme": "CPC",
+              "description": "SERVICIOS DE ASISTENCIA DE ASESORAMIENTO, ORIENTACION Y OPERACIONALES RELATIVOS A LA GESTION DE LOS RECURSOS HUMANOS DE UNA ORGANIZACION. LAS FUNCIONES DE CONSULTORIA EN MATERIA DE RECURSOS HUMANOS PUEDEN INCLUIR LA ACTIVIDAD DE AUDITORIA DE LA FUNCION"
+            },
+            "additionalClassifications": [
+              {
+                "id": "83113.00.1",
+                "uri": "https://www.compraspublicas.gob.ec/ProcesoContratacion/compras/exe/verComProductos_exe.php?tipo=buscar&idProducto=83113.00.1",
+                "scheme": "CPC",
+                "description": " SERVICIOS DE ASISTENCIA DE ASESORAMIENTO, ORIENTACION Y OPERACIONALES RELATIVOS A LA GESTION DE LOS RECURSOS HUMANOS DE UNA ORGANIZACION. LAS FUNCIONES DE CONSULTORIA EN MATERIA DE RECURSOS HUMANOS PUEDEN INCLUIR LA ACTIVIDAD DE  AUDITORIA DE LA FUNCION "
+              }
+            ]
+          }
+        ],
+        "title": "CDC-BIESS-2024-003-278089",
+        "value": {
+          "amount": 60000,
+          "currency": "USD"
+        },
+        "status": "active",
+        "enquiries": [
+          {
+            "id": "3716535",
+            "date": "2025-01-14T00:00:00-05:00",
+            "answer": "Se adjunta los contratos que corresponden a las facturas y retenciones enviadas en la oferta como anexo 9 y 15 respectivamente, como respaldo de la experiencia de la empresa",
+            "author": {
+              "id": "EC-RUC-1793214353001-1225112",
+              "name": "FCB ABOGADOS S.A.S."
+            },
+            "description": "En la documentaci\u00f3n presentada por el oferente 1, en el numeral 1.7 Experiencia del Oferente en servicios de consultor\u00eda realizados en los \u00faltimos a\u00f1os, se establece una experiencia general por $300.000,00000, sin embargo, dentro de los anexos presentados por el oferente no se encuentra ning\u00fan documento de respaldo. Por lo que, se solicita adjuntar el respectivo contrato, que justifique la experiencia general.",
+            "dateAnswered": "2025-01-14T00:00:00-05:00"
+          }
+        ],
+        "tenderers": [
+          {
+            "id": "EC-RUC-1793214353001-1225112",
+            "name": "FCB ABOGADOS S.A.S."
+          }
+        ],
+        "awardPeriod": {
+          "endDate": "2025-01-21T14:44:00-05:00",
+          "maxExtentDate": "2025-01-21T14:44:00-05:00"
+        },
+        "description": "CONTRATACI\u00d3N DE VOCALES PARA CONFORMAR EL TRIBUNAL DE CONCILIACI\u00d3N Y ARBITRAJE EN REPRESENTACI\u00d3N DEL BANCO DEL INSTITUTO DE SEGURIDAD SOCIAL",
+        "hasEnquiries": true,
+        "tenderPeriod": {
+          "startDate": "2024-12-31T17:00:00-05:00"
+        },
+        "awardCriteria": "ratedCriteria",
+        "enquiryPeriod": {
+          "endDate": "2025-01-07T17:00:00-05:00",
+          "startDate": "2024-12-31T17:00:00-05:00",
+          "maxExtentDate": "2025-01-07T17:00:00-05:00",
+          "durationInDays": 7
+        },
+        "procuringEntity": {
+          "id": "EC-RUC-1768156470001-278089",
+          "name": "BANCO DEL INSTITUTO ECUATORIANO DE SEGURIDAD SOCIAL"
+        },
+        "numberOfTenderers": 1,
+        "procurementMethod": "direct",
+        "eligibilityCriteria": "Otros Par\u00e1metros de Calificaci\u00f3n,Experiencia General,Experiencia Personal T\u00e9cnico,Plan de Trabajo",
+        "mainProcurementCategory": "services",
+        "procurementMethodDetails": "Contratacion directa"
+      },
+      "parties": [
+        {
+          "id": "EC-RUC-1768156470001-278089",
+          "name": "BANCO DEL INSTITUTO ECUATORIANO DE SEGURIDAD SOCIAL",
+          "roles": [
+            "buyer",
+            "procuringEntity"
+          ],
+          "address": {
+            "region": "PICHINCHA",
+            "locality": "QUITO",
+            "countryName": "ECUADOR",
+            "streetAddress": "Av. Rio Amazonas UNION NACIONAL DE PERIODISTAS S/N I\u00d1AQUITO"
+          },
+          "identifier": {
+            "id": "EC-RUC-1768156470001-278089",
+            "scheme": "EC-RUC",
+            "legalName": "BANCO DEL INSTITUTO ECUATORIANO DE SEGURIDAD SOCIAL"
+          },
+          "contactPoint": {
+            "name": "BANCO DEL INSTITUTO ECUATORIANO DE SEGURIDAD SOCIAL"
+          }
+        },
+        {
+          "id": "EC-RUC-1793214353001-1225112",
+          "name": "FCB ABOGADOS S.A.S.",
+          "roles": [
+            "tenderer",
+            "supplier"
+          ],
+          "address": {
+            "region": "PICHINCHA",
+            "locality": "QUITO",
+            "countryName": "ECUADOR",
+            "streetAddress": "SHYRIS PORTUGAL SN LA VICENTINA"
+          },
+          "identifier": {
+            "id": "EC-RUC-1793214353001-1225112",
+            "scheme": "EC-RUC",
+            "legalName": "FCB ABOGADOS S.A.S."
+          },
+          "contactPoint": {
+            "url": "http://www.fcbabogados.com",
+            "name": "FCB ABOGADOS S.A.S."
+          }
+        }
+      ],
+      "language": "es",
+      "planning": {
+        "budget": {
+          "id": "520601",
+          "amount": {
+            "amount": 60000,
+            "currency": "USD"
+          }
+        },
+        "rationale": "CONTRATACI\u00d3N DE VOCALES PARA CONFORMAR EL TRIBUNAL DE CONCILIACI\u00d3N Y ARBITRAJE EN REPRESENTACI\u00d3N DEL BANCO DEL INSTITUTO DE SEGURIDAD SOCIAL"
+      },
+      "contracts": [
+        {
+          "id": "2256773-CDC-BIESS-2024-003",
+          "value": {
+            "amount": 60000,
+            "currency": "USD"
+          },
+          "period": {
+            "endDate": "2028-03-13T00:00:00-05:00",
+            "startDate": "2025-03-14T00:00:00-05:00",
+            "durationInDays": 1095
+          },
+          "status": "terminated",
+          "awardID": "7853033-CDC-BIESS-2024-003",
+          "dateSigned": "2025-02-27T00:00:00-05:00"
+        }
+      ],
+      "initiationType": "tender"
+    }
+  ],
+  "publisher": {
+    "uid": "ocds-5wno2w",
+    "uri": "https://www.compraspublicas.gob.ec",
+    "name": "Servicio Nacional de Contrataci\u00f3n P\u00fablica (SERCOP)",
+    "scheme": "OCDS"
+  },
+  "extensions": [
+    "https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/master/extension.json",
+    "https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/master/extension.json",
+    "https://raw.githubusercontent.com/open-contracting-extensions/ocds_techniques_extension/master/extension.json",
+    "https://raw.githubusercontent.com/SERCOPEC/ocds_sercopEnteredValue_extension/master/extension.json",
+    "https://gitlab.com/dncp-opendata/ocds_auctions_extension/raw/master/extension.json",
+    "https://raw.githubusercontent.com/open-contracting-extensions/ocds_valueBreakdown_extension/main/extension.json",
+    "https://raw.githubusercontent.com/open-contracting-extensions/ocds_competitive_extension/master/extension.json",
+    "https://raw.githubusercontent.com/open-contracting-extensions/ocds_bid_extension/master/extension.json"
+  ],
+  "publishedDate": "2025-03-28T07:13:04-05:00",
+  "publicationPolicy": "https://datosabiertos.compraspublicas.gob.ec/PLATAFORMA/documentos/politica-publicacion-SERCOP-OCDS.pdf"
+}

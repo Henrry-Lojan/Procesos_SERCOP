@@ -2,183 +2,304 @@ import streamlit as st
 import pandas as pd
 from sercop_client import SercopClient
 import datetime
+import plotly.express as px
+import io
 
-# Page Configuration
+# --- CONFIGURATION & SETUP ---
 st.set_page_config(
-    page_title="Oportunidades SERCOP",
-    page_icon="🇪🇨",
+    page_title="SERCOP Pro | Buscador Inteligente",
+    page_icon="🚀",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Premium Look
+# Initialize Session State for Saved Searches
+if 'saved_searches' not in st.session_state:
+    st.session_state.saved_searches = []
+
+# --- CUSTOM CSS (PRO THEME) ---
 st.markdown("""
 <style>
-    .main {
+    /* Main Background */
+    .stApp {
         background-color: #f8f9fa;
     }
-    .stButton>button {
-        width: 100%;
-        border-radius: 8px;
-        height: 3em;
-        background-color: #0066cc;
-        color: white;
-        border: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    .stButton>button:hover {
-        background-color: #0052a3;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .search-container {
-        background-color: white;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-        margin-bottom: 2rem;
-    }
+    
+    /* Card Style */
     .result-card {
         background-color: white;
         padding: 1.5rem;
-        border-radius: 10px;
-        border-left: 5px solid #0066cc;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         margin-bottom: 1rem;
-        transition: transform 0.2s;
+        transition: all 0.3s ease;
     }
     .result-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        border-color: #0066cc;
     }
-    h1 {
+    
+    /* Typography */
+    h1, h2, h3 {
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         color: #1a1a1a;
-        font-family: 'Inter', sans-serif;
     }
-    h3 {
-        color: #333;
-        font-size: 1.2rem;
+    .card-title {
+        color: #0066cc;
+        font-size: 1.1rem;
+        font-weight: 700;
         margin-bottom: 0.5rem;
     }
-    .tag {
+    .card-meta {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Badges */
+    .badge {
         display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 15px;
-        font-size: 0.85rem;
-        font-weight: 500;
+        padding: 0.25rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
         margin-right: 0.5rem;
     }
-    .tag-budget {
-        background-color: #e3f2fd;
-        color: #0d47a1;
+    .badge-budget { background-color: #e3f2fd; color: #1565c0; }
+    .badge-date { background-color: #f3e5f5; color: #7b1fa2; }
+    .badge-type { background-color: #e8f5e9; color: #2e7d32; }
+    
+    /* Buttons */
+    .stButton>button {
+        border-radius: 8px;
+        font-weight: 600;
     }
-    .tag-date {
-        background-color: #f3e5f5;
-        color: #7b1fa2;
+    
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #ffffff;
+        border-right: 1px solid #f0f0f0;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize Client
+# --- CLIENT & CACHING ---
 @st.cache_resource
 def get_client():
     return SercopClient()
 
 client = get_client()
 
-# Sidebar Filters
+@st.cache_data(ttl=3600) # Cache results for 1 hour
+def search_api(keyword, year):
+    return client.search_processes(keyword, year=year)
+
+# --- SIDEBAR ---
 with st.sidebar:
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ecuador_flag_300.png/300px-Ecuador_flag_300.png", width=50)
-    st.title("Filtros")
+    st.title("🎛️ Panel de Control")
     
+    # Global Filters
+    st.subheader("Filtros de Búsqueda")
     current_year = datetime.datetime.now().year
-    year = st.number_input("Año", min_value=2015, max_value=current_year, value=current_year)
+    year = st.number_input("Año Fiscal", min_value=2015, max_value=current_year, value=current_year)
     
-    process_type = st.multiselect(
-        "Tipo de Procedimiento",
-        ["Menor Cuantía", "Ínfima Cuantía", "Cotización", "Licitación", "Subasta Inversa"],
-        default=["Menor Cuantía", "Ínfima Cuantía"]
+    st.markdown("---")
+    st.subheader("📍 Ubicación & Entidad")
+    entity_filter = st.text_input("Entidad", placeholder="Ej: Municipio...")
+    region_filter = st.text_input("Provincia/Región", placeholder="Ej: Pichincha...")
+    
+    st.markdown("---")
+    st.subheader("💰 Presupuesto ($)")
+    col_b1, col_b2 = st.columns(2)
+    min_budget = col_b1.number_input("Mín", value=0.0, step=1000.0)
+    max_budget = col_b2.number_input("Máx", value=0.0, step=1000.0)
+    
+    st.markdown("---")
+    st.subheader("📅 Fechas")
+    date_range = st.date_input(
+        "Rango",
+        value=(datetime.date(year, 1, 1), datetime.date(year, 12, 31))
     )
+
+# --- MAIN LAYOUT ---
+st.title("🚀 SERCOP Pro")
+
+# Tabs for Navigation
+tab_search, tab_analytics, tab_saved = st.tabs(["🔍 Buscador", "📊 Analíticas", "⭐ Guardados"])
+
+# --- TAB 1: SEARCH ---
+with tab_search:
+    col_search, col_save = st.columns([4, 1])
+    with col_search:
+        keyword = st.text_input("Palabra Clave", placeholder="Ej: Limpieza, Seguridad, Transporte...", label_visibility="collapsed")
+    with col_save:
+        if st.button("💾 Guardar Búsqueda"):
+            if keyword:
+                if keyword not in st.session_state.saved_searches:
+                    st.session_state.saved_searches.append(keyword)
+                    st.toast(f"Búsqueda '{keyword}' guardada!", icon="✅")
     
-    st.info("💡 Tip: Las 'Ínfimas Cuantías' son ideales para empezar.")
-
-# Main Content
-st.title("🚀 Buscador de Oportunidades SERCOP")
-st.markdown("Encuentra procesos de contratación pública de manera fácil y rápida.")
-
-# Search Section
-with st.container():
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        keyword = st.text_input("¿Qué estás buscando?", placeholder="Ej: Limpieza, Papelería, Mantenimiento...")
-    with col2:
-        st.write("") # Spacer
-        st.write("") # Spacer
-        search_button = st.button("Buscar")
-
-if search_button and keyword:
-    with st.spinner(f"Buscando oportunidades para '{keyword}'..."):
-        results = client.search_processes(keyword, year=year)
-        
-        if results and 'data' in results:
-            data = results['data']
+    if keyword:
+        with st.spinner("Consultando bases de datos..."):
+            results = search_api(keyword, year)
             
-            # Filter by process type (Client side filtering as API doesn't support it directly in search)
-            # Note: The API returns 'internal_type' or similar fields. We need to check the exact field name.
-            # Based on the example: "internal_type": "Licitación"
-            
-            filtered_data = []
-            if process_type:
+            if results and 'data' in results:
+                data = results['data']
+                filtered_data = []
+                
+                # --- FILTERING ---
+                start_date, end_date = date_range if len(date_range) == 2 else (None, None)
+                
                 for item in data:
-                    p_type = item.get('internal_type', '')
-                    # Simple partial match
-                    if any(pt.lower() in p_type.lower() for pt in process_type):
-                        filtered_data.append(item)
-            else:
-                filtered_data = data
+                    # Entity
+                    if entity_filter and entity_filter.lower() not in item.get('buyerName', '').lower(): continue
+                    # Region
+                    if region_filter:
+                        if region_filter.lower() not in item.get('region', '').lower() and \
+                           region_filter.lower() not in item.get('locality', '').lower(): continue
+                    # Budget
+                    try:
+                        b_val = float(item.get('budget', '0'))
+                        if max_budget > 0 and not (min_budget <= b_val <= max_budget): continue
+                        if min_budget > 0 and b_val < min_budget: continue
+                    except: pass
+                    # Date
+                    if start_date and end_date:
+                        try:
+                            d_val = datetime.datetime.strptime(item.get('date', '').split('T')[0], "%Y-%m-%d").date()
+                            if not (start_date <= d_val <= end_date): continue
+                        except: pass
+                    
+                    filtered_data.append(item)
                 
-            st.success(f"Se encontraron {len(filtered_data)} procesos relevantes.")
-            
-            for item in filtered_data:
-                # Extract details
-                title = item.get('description', 'Sin descripción')
-                ocid = item.get('ocid')
-                buyer = item.get('buyerName', 'Entidad desconocida')
-                date = item.get('date', 'Fecha no disponible')
-                p_type = item.get('internal_type', 'N/A')
-                
-                # Render Card
-                st.markdown(f"""
-                <div class="result-card">
-                    <h3>{title}</h3>
-                    <p><strong>Entidad:</strong> {buyer}</p>
-                    <div>
-                        <span class="tag tag-budget">{p_type}</span>
-                        <span class="tag tag-date">📅 {date}</span>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                with st.expander("Ver Detalles"):
-                    st.write(f"**ID del Proceso:** {ocid}")
-                    st.write(f"**Descripción Completa:** {item.get('description')}")
-                    if st.button("Ver en SERCOP", key=ocid):
-                        # Construct URL (This is a guess, usually needs specific ID)
-                        # Using the API link for now or a generic search link
-                        st.write(f"Consulta el detalle oficial usando el ID: {ocid}")
+                # --- DISPLAY RESULTS ---
+                if filtered_data:
+                    st.success(f"✅ {len(filtered_data)} oportunidades encontradas")
+                    
+                    # Prepare DataFrame for Display
+                    df_display = pd.DataFrame(filtered_data)
+                    
+                    # Select and rename columns for the grid
+                    cols_to_show = {
+                        'ocid': 'ID Proceso',
+                        'description': 'Descripción',
+                        'buyerName': 'Entidad Contratante',
+                        'budget': 'Presupuesto',
+                        'date': 'Fecha',
+                        'internal_type': 'Tipo',
+                        'region': 'Región'
+                    }
+                    
+                    # Filter columns that exist in the data
+                    available_cols = [c for c in cols_to_show.keys() if c in df_display.columns]
+                    df_grid = df_display[available_cols].rename(columns=cols_to_show)
+                    
+                    # Export Button
+                    buffer = io.BytesIO()
+                    with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+                        df_grid.to_excel(writer, index=False)
+                    st.download_button("📥 Exportar Excel", buffer.getvalue(), f"resultados_{keyword}.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    
+                    # Interactive Dataframe
+                    st.markdown("### 📋 Resultados (Selecciona una fila para ver rubros)")
+                    
+                    event = st.dataframe(
+                        df_grid,
+                        use_container_width=True,
+                        hide_index=True,
+                        on_select="rerun",
+                        selection_mode="single-row",
+                        column_config={
+                            "Presupuesto": st.column_config.NumberColumn(format="$%.2f"),
+                            "Fecha": st.column_config.DateColumn(format="YYYY-MM-DD"),
+                        }
+                    )
+                    
+                    # --- DETAIL VIEW (RUBROS) ---
+                    if len(event.selection.rows) > 0:
+                        selected_index = event.selection.rows[0]
+                        selected_row = df_grid.iloc[selected_index]
+                        selected_ocid = selected_row['ID Proceso']
                         
-        else:
-            st.warning("⚠️ No se encontraron resultados.")
-            st.markdown("""
-            **Sugerencias:**
-            - Intenta con palabras más generales (ej: "limpieza", "alimentos", "obra").
-            - **Prueba cambiando el año** en la barra lateral (ej: 2024).
-            - Verifica que la ortografía sea correcta.
-            """)
+                        st.divider()
+                        st.subheader(f"📦 Rubros: {selected_row['Descripción']}")
+                        
+                        with st.spinner(f"Cargando detalles del proceso {selected_ocid}..."):
+                            details = client.get_process_details(selected_ocid)
+                            
+                            if details:
+                                # Extract Items
+                                try:
+                                    # OCDS structure: releases[0].tender.items
+                                    items = details['releases'][0]['tender']['items']
+                                    
+                                    if items:
+                                        item_data = []
+                                        for item in items:
+                                            item_data.append({
+                                                "ID Item": item.get('id', 'N/A'),
+                                                "Descripción": item.get('description', 'N/A'),
+                                                "Cantidad": item.get('quantity', 0),
+                                                "Unidad": item.get('unit', {}).get('name', 'N/A'),
+                                                "Precio Unit.": item.get('unit', {}).get('value', {}).get('amount', 0),
+                                                "CPC": item.get('classification', {}).get('id', 'N/A')
+                                            })
+                                            
+                                        df_items = pd.DataFrame(item_data)
+                                        st.dataframe(
+                                            df_items,
+                                            use_container_width=True,
+                                            hide_index=True,
+                                            column_config={
+                                                "Precio Unit.": st.column_config.NumberColumn(format="$%.4f")
+                                            }
+                                        )
+                                    else:
+                                        st.info("No se encontraron rubros (items) para este proceso.")
+                                        
+                                except (KeyError, IndexError, TypeError) as e:
+                                    st.error(f"No se pudo extraer la estructura de items. Posible formato diferente.")
+                                    # st.write(details) # Uncomment for debugging
+                            else:
+                                st.error("Error al conectar con la API de detalles.")
 
-elif search_button and not keyword:
-    st.error("Por favor ingresa una palabra clave.")
+                else:
+                    st.warning("No hay resultados con estos filtros.")
+            else:
+                st.info("No se encontraron procesos. Intenta con otra palabra o año.")
 
-# Footer
-st.markdown("---")
-st.markdown("Desarrollado con ❤️ para las PYMES de Ecuador")
+# --- TAB 2: ANALYTICS ---
+with tab_analytics:
+    if keyword and 'filtered_data' in locals() and filtered_data:
+        st.subheader("📊 Análisis de Resultados")
+        df_viz = pd.DataFrame(filtered_data)
+        
+        c1, c2 = st.columns(2)
+        with c1:
+            if 'internal_type' in df_viz.columns:
+                fig = px.pie(df_viz, names='internal_type', title='Oportunidades por Tipo', hole=0.4)
+                st.plotly_chart(fig, use_container_width=True)
+        with c2:
+            if 'buyerName' in df_viz.columns:
+                top = df_viz['buyerName'].value_counts().head(7)
+                fig2 = px.bar(top, orientation='h', title='Principales Compradores')
+                st.plotly_chart(fig2, use_container_width=True)
+    else:
+        st.info("Realiza una búsqueda para ver las analíticas.")
+
+# --- TAB 3: SAVED SEARCHES ---
+with tab_saved:
+    st.subheader("⭐ Búsquedas Guardadas")
+    if st.session_state.saved_searches:
+        for i, saved_kw in enumerate(st.session_state.saved_searches):
+            col_txt, col_del = st.columns([4, 1])
+            with col_txt:
+                st.markdown(f"**{saved_kw}**")
+            with col_del:
+                if st.button("❌", key=f"del_{i}"):
+                    st.session_state.saved_searches.pop(i)
+                    st.rerun()
+    else:
+        st.write("No tienes búsquedas guardadas aún.")
