@@ -47,18 +47,6 @@ La plataforma oficial de SERCOP tiene limitaciones en búsquedas avanzadas, aná
 - Código CPC (Clasificador Central de Productos)
 - Navegación intuitiva mediante selección de filas
 
-### 📊 **Dashboard de Analíticas**
-- **Gráfico circular**: Distribución de oportunidades por tipo de proceso
-- **Gráfico de barras horizontal**: Top 7 entidades compradoras principales
-- Visualizaciones interactivas con Plotly (zoom, hover, exportación)
-- Análisis automático de resultados filtrados
-
-### 💾 **Gestión de Búsquedas**
-- Guardado de palabras clave frecuentes
-- Lista persistente durante la sesión
-- Eliminación individual de búsquedas guardadas
-- Notificaciones toast de confirmación
-
 ### 📥 **Exportación de Datos**
 - Exportación directa a Excel (.xlsx)
 - Formato profesional con nombres de columna descriptivos
