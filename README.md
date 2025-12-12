@@ -1,4 +1,4 @@
-# 🚀 SERCOP Pro | Buscador Inteligente de Contratación Pública
+# SERCOP Pro | Buscador Inteligente de Contratación Pública
 
 <div align="center">
 
